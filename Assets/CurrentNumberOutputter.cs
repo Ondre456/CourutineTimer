@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -8,9 +6,14 @@ public class CurrentNumberOutputter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private Timer _timer;
 
-    private void Start()
+    private void OnEnable()
     {
         _timer.OnTimeUpdated += OutputNumber;
+    }
+
+    private void OnDisable()
+    {
+        _timer.OnTimeUpdated -= OutputNumber;
     }
 
     private void OutputNumber(int outputData)

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +14,13 @@ public class Timer : MonoBehaviour
     private bool _timerStarted = false;
     private WaitForSeconds _wait;
     
+
+    private void Start()
+    {
+        _wait = new WaitForSeconds(_delay);
+        _button.onClick.AddListener(ResetTimer);
+    }
+
     public void ResetTimer()
     {
         if (_timerStarted)
@@ -26,14 +32,6 @@ public class Timer : MonoBehaviour
             _timerStarted = true;
             StartCoroutine(Time());
         }
-
-        Debug.Log(_timerStarted);
-    }
-
-    private void Start()
-    {
-        _wait = new WaitForSeconds(_delay);
-        _button.onClick.AddListener(ResetTimer);
     }
 
     private IEnumerator Time()
@@ -41,7 +39,6 @@ public class Timer : MonoBehaviour
         while (_timerStarted)
         {
             OnTimeUpdated?.Invoke(_currentNumber);
-            Debug.Log(_currentNumber);
 
             yield return _wait;
 
