@@ -1,12 +1,15 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TimerController : MonoBehaviour
+public class Timer : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private float _delay = 0.5f;
+    [SerializeField] private Button _button;
+
+    public event Action<int> OnTimeUpdated;
 
     private int _currentNumber = 0;
     private bool _timerStarted = false;
@@ -29,16 +32,15 @@ public class TimerController : MonoBehaviour
 
     private void Start()
     {
-        _text.text = "";
         _wait = new WaitForSeconds(_delay);
+        _button.onClick.AddListener(ResetTimer);
     }
 
     private IEnumerator Time()
     {
         while (_timerStarted)
         {
-       
-            _text.text = _currentNumber.ToString();
+            OnTimeUpdated?.Invoke(_currentNumber);
             Debug.Log(_currentNumber);
 
             yield return _wait;
